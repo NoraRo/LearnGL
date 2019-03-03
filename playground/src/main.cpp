@@ -1,3 +1,6 @@
+#include "graphics.h"
+#include "IO.h"
+
 #include <iostream>
 
 #include<Windows.h>
@@ -6,7 +9,12 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
+#define DIR "C:/Users/Nour/Source/Repos/OPEN/playground/shaders/"
+
 using namespace std;
+using namespace graphics;
+using namespace io;
+
 
 HWND window;
 HDC dc;
@@ -134,13 +142,28 @@ init_window()
 
 void draw()
 {
-	glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glBegin(GL_TRIANGLES);
-		glVertex2f(-1.0f, -1.0f);
-		glVertex2f(0.0f, 1.0f);
-		glVertex2f(1.0f, -1.0f);
-	glEnd();
+	float vertices [] =
+	{
+		-0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, 0.0f,
+		0.0f,  0.5f, 0.0f
+	};
+
+
+	string vert_content = read_file(DIR "init.vert.glsl");
+	string frag_content = read_file(DIR "init.frag");
+
+	GLuint vert_shader = graphics::gen_shader(GL_VERTEX_SHADER, vert_content.c_str());
+	GLuint frag_shader = graphics::gen_shader(GL_FRAGMENT_SHADER, frag_content.c_str());
+
+	GLuint program = gen_program(vert_shader, frag_shader);
+	GLuint vao = gen_vao();
+	bind_buffer(vao, vertices, sizeof(vertices), 3, GL_FLOAT, false, 0);
+
+	glBindVertexArray(vao);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void main_loop()
