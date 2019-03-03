@@ -9,7 +9,7 @@ namespace graphics
 	gen_vao();
 
 	void
-	bind_buffer(GLuint vbo,
+	bind_buffer(GLuint vbo, GLenum buffer_type,
 				void* data, size_t size,
 				int element_count,
 				GLenum data_type,

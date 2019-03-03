@@ -37,7 +37,7 @@ namespace graphics
 	}
 
 	void
-	bind_buffer(GLuint vao,
+	bind_buffer(GLuint vao, GLenum buffer_type,
 				void* data, size_t size,
 				int element_count,
 				GLenum data_type,
@@ -49,17 +49,20 @@ namespace graphics
 		glGenBuffers(1, &vbo);
 		glBindVertexArray(vao);
 		//Bind
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-		GLenum normlize = normalized? GL_TRUE : GL_FALSE;
+		glBindBuffer(buffer_type, vbo);
+		glBufferData(buffer_type, size, data, GL_STATIC_DRAW);
 
-		int stride = element_count * get_vertex_size(data_type);
-
-		glVertexAttribPointer(location, element_count, data_type, normlize, stride, (void*)0);
-		glEnableVertexAttribArray(location);
+		if(buffer_type == GL_ARRAY_BUFFER)
+		{
+			GLenum normlize = normalized? GL_TRUE : GL_FALSE;
+			int stride = element_count * get_vertex_size(data_type);
+			glVertexAttribPointer(location, element_count, data_type, normlize, stride, (void*)0);
+			glEnableVertexAttribArray(location);
+		}
 		//unbind
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		//Order differ take care!
 		glBindVertexArray(0);
+		glBindBuffer(buffer_type, 0);
 	}
 
 	GLuint
