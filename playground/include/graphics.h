@@ -9,9 +9,11 @@ namespace graphics
 	gen_vao();
 
 	void
-	bind_buffer(GLuint vbo, GLenum buffer_type,
+	bind_buffer(GLuint vao, GLenum buffer_type,
 				void* data, size_t size,
 				int element_count,
+				int stride,
+				int offset_elements,
 				GLenum data_type,
 				bool normalized,
 				int location);

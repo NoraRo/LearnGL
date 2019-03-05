@@ -145,10 +145,10 @@ void draw()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	float vertices[] = {
-		0.5f,  0.5f, 0.0f,  // top right
-		0.5f, -0.5f, 0.0f,  // bottom right
-		-0.5f, -0.5f, 0.0f,  // bottom left
-		-0.5f,  0.5f, 0.0f   // top left 
+		0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
+		-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -164,8 +164,9 @@ void draw()
 
 	GLuint program = gen_program(vert_shader, frag_shader);
 	GLuint vao = gen_vao();
-	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, GL_FLOAT, false, 0);
-	bind_buffer(vao, GL_ELEMENT_ARRAY_BUFFER, indices, sizeof(indices), 3, GL_UNSIGNED_INT, false, 0);
+	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 6, 0, GL_FLOAT, false, 0);
+	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 6, 3, GL_FLOAT, false, 1);
+	bind_buffer(vao, GL_ELEMENT_ARRAY_BUFFER, indices, sizeof(indices), 3, 0, 0, GL_UNSIGNED_INT, false, 0);
 
 	//change color by time
 	SYSTEMTIME time;

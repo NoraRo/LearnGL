@@ -40,6 +40,8 @@ namespace graphics
 	bind_buffer(GLuint vao, GLenum buffer_type,
 				void* data, size_t size,
 				int element_count,
+				int stride,
+				int offset_elements,
 				GLenum data_type,
 				bool normalized,
 				int location)
@@ -55,8 +57,10 @@ namespace graphics
 		if(buffer_type == GL_ARRAY_BUFFER)
 		{
 			GLenum normlize = normalized? GL_TRUE : GL_FALSE;
-			int stride = element_count * get_vertex_size(data_type);
-			glVertexAttribPointer(location, element_count, data_type, normlize, stride, (void*)0);
+			int stride_offset = stride * get_vertex_size(data_type);
+			int offset = offset_elements * get_vertex_size(data_type);
+			glVertexAttribPointer(location, element_count, data_type, normlize,
+								  stride_offset, (void*)offset);
 			glEnableVertexAttribArray(location);
 		}
 		//unbind
