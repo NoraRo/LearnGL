@@ -23,4 +23,13 @@ namespace graphics
 
 	GLuint
 	gen_program(GLuint vert_shader, GLuint frag_shader);
+
+	void
+	set_uniform_bool(GLuint program_ID, const char* name, bool value);
+
+	void
+	set_uniform_int(GLuint program_ID, const char* name, int value);
+
+	void
+	set_uniform_float(GLuint program_ID, const char* name, float value);
 }

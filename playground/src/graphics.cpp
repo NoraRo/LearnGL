@@ -113,4 +113,24 @@ namespace graphics
 
 		return prog;
 	}
+
+	void
+	set_uniform_bool(GLuint program_ID, const char* name, bool value)
+	{
+		glUniform1i(glGetUniformLocation(program_ID, name), (int)value);
+	}
+
+	void
+	set_uniform_int(GLuint program_ID, const char* name, int value)
+	{
+		glUniform1i(glGetUniformLocation(program_ID, name), value);
+	}
+
+	void
+	set_uniform_float(GLuint program_ID, const char* name, float value)
+	{
+		glUniform1i(glGetUniformLocation(program_ID, name), value);
+	}
+
+
 }

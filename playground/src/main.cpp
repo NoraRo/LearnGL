@@ -156,8 +156,8 @@ void draw()
 	};
 
 
-	string vert_content = read_file(DIR "init.vert.glsl");
-	string frag_content = read_file(DIR "init.frag");
+	string vert_content = read_file(DIR "init.vs");
+	string frag_content = read_file(DIR "init.fs");
 
 	GLuint vert_shader = graphics::gen_shader(GL_VERTEX_SHADER, vert_content.c_str());
 	GLuint frag_shader = graphics::gen_shader(GL_FRAGMENT_SHADER, frag_content.c_str());
@@ -168,16 +168,7 @@ void draw()
 	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 6, 3, GL_FLOAT, false, 1);
 	bind_buffer(vao, GL_ELEMENT_ARRAY_BUFFER, indices, sizeof(indices), 3, 0, 0, GL_UNSIGNED_INT, false, 0);
 
-	//change color by time
-	SYSTEMTIME time;
-	GetLocalTime(&time);
-	float blueValue = sin(time.wSecond) / 7.0f + 0.5f;
-	GLint uniformLocation = glGetUniformLocation(program, "color");
-	glUniform4f(uniformLocation, 0.0f, 0.0f, blueValue, 1.0f);
-
 	glBindVertexArray(vao);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
