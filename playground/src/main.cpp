@@ -167,8 +167,15 @@ void draw()
 	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, GL_FLOAT, false, 0);
 	bind_buffer(vao, GL_ELEMENT_ARRAY_BUFFER, indices, sizeof(indices), 3, GL_UNSIGNED_INT, false, 0);
 
+	//change color by time
+	SYSTEMTIME time;
+	GetLocalTime(&time);
+	float blueValue = sin(time.wSecond) / 7.0f + 0.5f;
+	GLint uniformLocation = glGetUniformLocation(program, "color");
+	glUniform4f(uniformLocation, 0.0f, 0.0f, blueValue, 1.0f);
+
 	glBindVertexArray(vao);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
