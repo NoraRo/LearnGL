@@ -9,7 +9,7 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
-#define DIR "C:/Users/Nour/Source/Repos/OPEN/playground/shaders/"
+#define DIR "C:/Users/Nour/Source/Repos/OPEN/playground/"
 
 using namespace std;
 using namespace graphics;
@@ -145,10 +145,11 @@ void draw()
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	float vertices[] = {
-		0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // top right
-		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom right
-		-0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // bottom left
-		-0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // top left 
+		//Positions				//Colors			//Texture coords
+		 0.5f,  0.5f, 0.0f,		1.0f, 0.0f, 0.0f,	1.0f, 1.0f, // top right
+		 0.5f, -0.5f, 0.0f,		0.0f, 1.0f, 0.0f,	1.0f, 0.0f, // bottom right
+		-0.5f, -0.5f, 0.0f,		0.0f, 0.0f, 1.0f,	0.0f, 0.0f, // bottom left
+		-0.5f,  0.5f, 0.0f,		1.0f, 1.0f, 1.0f,	0.0f, 1.0f // top left 
 	};
 	unsigned int indices[] = {  // note that we start from 0!
 		0, 1, 3,   // first triangle
@@ -156,20 +157,29 @@ void draw()
 	};
 
 
-	string vert_content = read_file(DIR "init.vs");
-	string frag_content = read_file(DIR "init.fs");
+	string vert_content = read_file(DIR "shaders/init.vs");
+	string frag_content = read_file(DIR "shaders/init.fs");
 
 	GLuint vert_shader = graphics::gen_shader(GL_VERTEX_SHADER, vert_content.c_str());
 	GLuint frag_shader = graphics::gen_shader(GL_FRAGMENT_SHADER, frag_content.c_str());
 
 	GLuint program = gen_program(vert_shader, frag_shader);
 	GLuint vao = gen_vao();
-	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 6, 0, GL_FLOAT, false, 0);
-	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 6, 3, GL_FLOAT, false, 1);
+	//Vertices
+	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 8, 0, GL_FLOAT, false, 0);
+	//Colors
+	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 3, 8, 3, GL_FLOAT, false, 1);
+	//Texture
+	bind_buffer(vao, GL_ARRAY_BUFFER, vertices, sizeof(vertices), 2, 8, 6, GL_FLOAT, false, 2);
+	//Indecies
 	bind_buffer(vao, GL_ELEMENT_ARRAY_BUFFER, indices, sizeof(indices), 3, 0, 0, GL_UNSIGNED_INT, false, 0);
+
+	//Texture1
+	gen_texture(GL_TEXTURE_2D, DIR "textures/wooden_container.jpg");
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
 

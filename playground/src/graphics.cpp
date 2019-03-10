@@ -6,6 +6,66 @@ namespace graphics
 {
 	using namespace std;
 
+	bool
+	_load_image1D(const char* path)
+	{
+		int width, height, nrChannels;
+		unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+		if(data)
+		{
+
+			glTexImage1D(GL_TEXTURE_1D, 0, GL_RGB, width, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_1D);
+		}
+		else
+		{
+			cout<< "Faild to load texture\n";
+			return false;
+		}
+		stbi_image_free(data);
+		return true;
+	}
+
+	bool
+	_load_image2D(const char* path)
+	{
+		int width, height, nrChannels;
+		unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+		if(data)
+		{
+
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_2D);
+		}
+		else
+		{
+			cout<< "Faild to load texture\n";
+			return false;
+		}
+		stbi_image_free(data);
+		return true;
+	}
+
+	bool
+	_load_image3D(const char* path)
+	{
+		int width, height, depth, nrChannels;
+		unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+		if(data)
+		{
+
+			glTexImage3D(GL_TEXTURE_3D, 0, GL_RGB, width, height, depth, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+			glGenerateMipmap(GL_TEXTURE_3D);
+		}
+		else
+		{
+			cout<< "Faild to load texture\n";
+			return false;
+		}
+		stbi_image_free(data);
+		return true;
+	}
+
 	int
 	get_vertex_size(GLenum type)
 	{
@@ -112,6 +172,34 @@ namespace graphics
 		glDeleteShader(frag_shader);
 
 		return prog;
+	}
+
+	GLuint
+	gen_texture(GLenum tex_type, const char* img_path, GLenum active_tex)
+	{
+		GLuint tex_id;
+		glGenTextures(1, &tex_id);
+		//glActiveTexture(active_tex);
+		glBindTexture(tex_type, tex_id);
+		stbi_set_flip_vertically_on_load(true);
+
+		switch(tex_type)
+		{
+		
+			case GL_TEXTURE_1D:
+				_load_image1D(img_path);
+				break;
+			case GL_TEXTURE_2D:
+				_load_image2D(img_path);
+				break;
+			case GL_TEXTURE_3D:
+				_load_image3D(img_path);
+				break;
+			default:
+				cout<< "Texture type is unknown\n";
+				break;
+		}
+		return tex_id;
 	}
 
 	void

@@ -2,6 +2,7 @@
 
 #include <GL/glew.h>
 #include <GL/wglew.h>
+#include "stb_image.h"
 
 namespace graphics
 {
@@ -23,6 +24,11 @@ namespace graphics
 
 	GLuint
 	gen_program(GLuint vert_shader, GLuint frag_shader);
+
+	GLuint
+	gen_texture(GLenum tex_type,
+				const char* img_path,
+				GLenum active_tex = GL_TEXTURE0);
 
 	void
 	set_uniform_bool(GLuint program_ID, const char* name, bool value);
